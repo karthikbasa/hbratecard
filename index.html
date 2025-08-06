@@ -1,39 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greencard — Smart Rate Planner</title>
-  <style>
-    body { font-family: 'Segoe UI', sans-serif; background-color: #f4fdf6; color: #2f4f4f; margin: 0; padding: 20px; }
-    h1 { color: #3b6f5e; background-color: #d6f5dc; padding: 10px; border-radius: 8px; text-align: center; }
-    form { background-color: #ffffff; border: 1px solid #c0e6c0; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 700px; margin: auto; animation: fadeSlideIn 0.6s ease; }
-    label { display: block; margin: 12px 0 6px; }
-    select, input { padding: 8px; border-radius: 6px; border: 1px solid #a6dba6; width: 100%; box-sizing: border-box; }
-    button { margin-top: 12px; padding: 10px 14px; background-color: #3b6f5e; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover, select:hover, input:hover { box-shadow: 0 0 8px rgba(91, 150, 123, 0.3); transition: box-shadow 0.3s ease; }
-    .product-row { margin-bottom: 20px; border-bottom: 1px solid #e2f4e2; padding-bottom: 10px; animation: fadeSlideIn 0.4s ease-out; transition: all 0.4s ease; }
-    .product-row.removing { animation: fadeOut 0.3s ease forwards; }
-    ul { background-color: #effaf1; padding: 12px; border-radius: 6px; list-style-type: none; }
-    li { margin: 6px 0; }
-    strong { color: #2d6b4d; display: block; margin-top: 10px; }
-    @keyframes fadeSlideIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
-    @keyframes fadeOut { to {opacity: 0; transform: translateX(30px);} }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greencard — Smart Rate Planner</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4fdf6; color: #2f4f4f; margin: 0; padding: 20px; }
+        h1 { color: #3b6f5e; background-color: #d6f5dc; padding: 10px; border-radius: 8px; text-align: center; }
+        form { background-color: #ffffff; border: 1px solid #c0e6c0; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 700px; margin: auto; animation: fadeSlideIn 0.6s ease; }
+        label { display: block; margin: 12px 0 6px; }
+        select, input { padding: 8px; border-radius: 6px; border: 1px solid #a6dba6; width: 100%; box-sizing: border-box; }
+        button { margin-top: 12px; padding: 10px 14px; background-color: #3b6f5e; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+        button:hover, select:hover, input:hover { box-shadow: 0 0 8px rgba(91, 150, 123, 0.3); transition: box-shadow 0.3s ease; }
+        .product-row { margin-bottom: 20px; border-bottom: 1px solid #e2f4e2; padding-bottom: 10px; animation: fadeSlideIn 0.4s ease-out; transition: all 0.4s ease; }
+        .product-row.removing { animation: fadeOut 0.3s ease forwards; }
+        ul { background-color: #effaf1; padding: 12px; border-radius: 6px; list-style-type: none; }
+        li { margin: 6px 0; }
+        strong { color: #2d6b4d; display: block; margin-top: 10px; }
+        .privacy-note {
+            font-size: 0.9rem;
+            color: #3b6f5e;
+            background-color: #eaf7ef;
+            border: 1px solid #cdecd2;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        @keyframes fadeSlideIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+        @keyframes fadeOut { to {opacity: 0; transform: translateX(30px);} }
+    </style>
 </head>
 <body>
-  <h1>Greencard — Smart Rate Planner</h1>
-  <form onsubmit="event.preventDefault(); computeTotal();">
+<h1>Greencard — Smart Rate Planner</h1>
+<form onsubmit="event.preventDefault(); computeTotal();">
     <input type="hidden" id="item_count" value="0">
     <div id="products"></div>
     <button type="button" onclick="addProductRow()">➕ Add Product</button><br><br>
     <button type="submit">Compute Total</button>
     <button type="button" onclick="exportReceipt()">🧾 Save Receipt</button>
-  </form>
+</form>
 
-  <div id="results"></div>
+<div id="results"></div>
 
-  <template id="product-template">
+<section class="privacy-note">
+    <h3>Privacy Notice</h3>
+    <p>
+        This app operates entirely within your browser and does not collect, store, or transmit any personal data. Your inputs remain private and are not shared with any external services or servers. By using this app, you acknowledge and accept this privacy guarantee.
+    </p>
+</section>
+
+<template id="product-template">
     <label>Product:</label>
     <select required class="product-select"></select>
 
@@ -42,189 +62,189 @@
 
     <label>Discount:</label>
     <select required class="discount-select">
-      <option value="25%">25%</option>
-      <option value="35%">35%</option>
-      <option value="42%">42%</option>
-      <option value="50%">50%</option>
-      <option value="MRP" selected>MRP</option>
+        <option value="25%">25%</option>
+        <option value="35%">35%</option>
+        <option value="42%">42%</option>
+        <option value="50%">50%</option>
+        <option value="MRP" selected>MRP</option>
     </select>
-  </template>
+</template>
 
-  <script>
+<script>
     const productsData = [
-      { name: "Formula 1 - Nutritional Shake Mix - Vanilla - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Formula 1 - Nutritional Shake Mix - Chocolate - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Formula 1 - Nutritional Shake Mix - Mango - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Formula 1 - Nutritional Shake Mix - Orange Cream - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Formula 1 - Nutritional Shake Mix - Strawberry - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Formula 1 - Nutritional Shake Mix - Kulfi - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Formula 1 - Nutritional Shake Mix - Banana Caramel - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Formula 1- Nutritional Shake Mix - Rose Kheer - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Formula 1 Nutritional Shake Mix - Paan - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
-      { name: "Personalized Protein Powder - 200 gms", "MRP": 1455, "25%": 1137, "35%": 1009, "42%": 920, "50%": 818, "VP": 11.50 },
-      { name: "Personalized Protein Powder - 400 gms", "MRP": 2792, "25%": 2181, "35%": 1937, "42%": 1766, "50%": 1571, "VP": 22.50 },
-      { name: "ShakeMate - 500 gms", "MRP": 733, "25%": 643, "35%": 606, "42%": 581, "50%": 552, "VP": 6.45 },
-      { name: "Ocular Defense", "MRP": 2166, "25%": 1691, "35%": 1502, "42%": 1369, "50%": 1217, "VP": 19.25 },
-      { name: "Male Factor", "MRP": 3832, "25%": 2993, "35%": 2658, "42%": 2423, "50%": 2155, "VP": 34.75 },
-      { name: "Woman's Choice", "MRP": 1399, "25%": 1092, "35%": 970, "42%": 884, "50%": 786, "VP": 12.45 },
-      { name: "vritilife Brain Health 60 Tablets", "MRP": 1645, "25%": 1285, "35%": 1141, "42%": 1040, "50%": 925, "VP": 15.10 },
-      { name: "vritilife® Facial Cleanser (100ml)", "MRP": 1165, "25%": 910, "35%": 808, "42%": 736, "50%": 655, "VP": 10.40 },
-      { name: "vritilife® Facial Toner (100ml)", "MRP": 1322, "25%": 1033, "35%": 917, "42%": 836, "50%": 743, "VP": 11.80 },
-      { name: "vritilife® Facial Serum (30 ml)", "MRP": 3022, "25%": 2361, "35%": 2096, "42%": 1911, "50%": 1700, "VP": 27.05 },
-      { name: "vritilife® Moisturizer (100ml)", "MRP": 1473, "25%": 1151, "35%": 1022, "42%": 931, "50%": 828, "VP": 13.15 },
-      { name: "HN-Skin Booster Orange -10gms*30 sachets", "MRP": 4398, "25%": 3582, "35%": 3258, "42%": 3031, "50%": 2771, "VP": 38.65 },
-      { name: "HN-Skin Booster Canister", "MRP": 4266, "25%": 3450, "35%": 3123, "42%": 2895, "50%": 2634, "VP": 38.65 },
-      { name: "vritilife immune health - 60 Tab", "MRP": 1717, "25%": 1341, "35%": 1191, "42%": 1086, "50%": 965, "VP": 15.80 },
-      { name: "Afresh Energy Drink Mix - Ginger - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
-      { name: "Afresh Energy Drink Mix - Elaichi - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
-      { name: "Afresh Energy Drink Mix - Lemon - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
-      { name: "Afresh Energy Drink Mix - Peach - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
-      { name: "Afresh Energy Drink Mix - Cinnamon - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
-      { name: "Afresh Energy Drink Mix - Kashmiri Kahwa - 40 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
-      { name: "Afresh Energy Drink Mix - Tulsi (Basil) - 50 gms", "MRP": 913, "25%": 726, "35%": 652, "42%": 600, "50%": 540, "VP": 7.80 },
-      { name: "H24 Hydrate - 5 gms *20 Sachets", "MRP": 1839, "25%": 1504, "35%": 1370, "42%": 1276, "50%": 1169, "VP": 14.05 },
-      { name: "H24 Rebuild Strength - 50 gms *10 Sachets", "MRP": 2940, "25%": 2339, "35%": 2099, "42%": 1931, "50%": 1739, "VP": 24.70 },
-      { name: "DinoShake™ - Chocolicious - 200 gms", "MRP": 1252, "25%": 978, "35%": 868, "42%": 792, "50%": 704, "VP": 9.60 },
-      { name: "DinoShake™ - Strawberry - 200 gms", "MRP": 1252, "25%": 978, "35%": 868, "42%": 792, "50%": 704, "VP": 9.60 },
-      { name: "Activated Fibre - 90 Tablets", "MRP": 1839, "25%": 1436, "35%": 1275, "42%": 1162, "50%": 1034, "VP": 15.75 },
-      { name: "Active Fiber Complex - Unflavoured - 200 gms", "MRP": 2876, "25%": 2246, "35%": 1995, "42%": 1819, "50%": 1617, "VP": 22.95 },
-      { name: "Aloe Plus - 60 Capsules", "MRP": 1190, "25%": 929, "35%": 825, "42%": 752, "50%": 668, "VP": 9.40 },
-      { name: "Herbal Aloe Concentrate - Unflavored (Original) - 500 ml", "MRP": 3030, "25%": 2366, "35%": 2101, "42%": 1916, "50%": 1704, "VP": 24.95 },
-      { name: "Simply Probiotic - 1 gms *30 Sachets", "MRP": 2482, "25%": 1938, "35%": 1721, "42%": 1569, "50%": 1395, "VP": 21.95 },
-      { name: "vritilife Triphala - 60 Tablets", "MRP": 1224, "25%": 956, "35%": 849, "42%": 774, "50%": 688, "VP": 11.25 },
-      { name: "Herbalife Calcium Tablets - 60 Tablets", "MRP": 1352, "25%": 1056, "35%": 937, "42%": 855, "50%": 760, "VP": 10.25 },
-      { name: "Joint Support - 90 Tablets", "MRP": 2759, "25%": 2155, "35%": 1913, "42%": 1744, "50%": 1551, "VP": 20.90 },
-      { name: "Herbalife Niteworks - 300 gms", "MRP": 8010, "25%": 6258, "35%": 5557, "42%": 5066, "50%": 4505, "VP": 75.00 },
-      { name: "Herbalifeline - 60 Softgels", "MRP": 2998, "25%": 2341, "35%": 2079, "42%": 1895, "50%": 1686, "VP": 25.75 },
-      { name: "Beta Heart - Vanilla Flavour - 15 gms *15 Sachets", "MRP": 2520, "25%": 2054, "35%": 1868, "42%": 1738, "50%": 1589, "VP": 19.55 },
-      { name: "Multivitamin Mineral and Herbal Tablets Plus - 90 Tablets", "MRP": 2252, "25%": 1759, "35%": 1562, "42%": 1424, "50%": 1226, "VP": 19.95 },
-      { name: "Cell Activator - New - 60 Tablets", "MRP": 2489, "25%": 1944, "35%": 1726, "42%": 1574, "50%": 1399, "VP": 21.95 },
-      { name: "Cell-U-Loss Advanced - 90 Tablets", "MRP": 1916, "25%": 1496, "35%": 1329, "42%": 1211, "50%": 1077, "VP": 15.75 },
-      { name: "Herbal Control - 90 Tablets", "MRP": 3858, "25%": 3013, "35%": 2676, "42%": 2440, "50%": 2169, "VP": 32.95 }
+        { name: "Formula 1 - Nutritional Shake Mix - Vanilla - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Formula 1 - Nutritional Shake Mix - Chocolate - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Formula 1 - Nutritional Shake Mix - Mango - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Formula 1 - Nutritional Shake Mix - Orange Cream - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Formula 1 - Nutritional Shake Mix - Strawberry - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Formula 1 - Nutritional Shake Mix - Kulfi - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Formula 1 - Nutritional Shake Mix - Banana Caramel - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Formula 1- Nutritional Shake Mix - Rose Kheer - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Formula 1 Nutritional Shake Mix - Paan - 500 gms", "MRP": 2449, "25%": 1912, "35%": 1698, "42%": 1548, "50%": 1376, "VP": 21.75 },
+        { name: "Personalized Protein Powder - 200 gms", "MRP": 1455, "25%": 1137, "35%": 1009, "42%": 920, "50%": 818, "VP": 11.50 },
+        { name: "Personalized Protein Powder - 400 gms", "MRP": 2792, "25%": 2181, "35%": 1937, "42%": 1766, "50%": 1571, "VP": 22.50 },
+        { name: "ShakeMate - 500 gms", "MRP": 733, "25%": 643, "35%": 606, "42%": 581, "50%": 552, "VP": 6.45 },
+        { name: "Ocular Defense", "MRP": 2166, "25%": 1691, "35%": 1502, "42%": 1369, "50%": 1217, "VP": 19.25 },
+        { name: "Male Factor", "MRP": 3832, "25%": 2993, "35%": 2658, "42%": 2423, "50%": 2155, "VP": 34.75 },
+        { name: "Woman's Choice", "MRP": 1399, "25%": 1092, "35%": 970, "42%": 884, "50%": 786, "VP": 12.45 },
+        { name: "vritilife Brain Health 60 Tablets", "MRP": 1645, "25%": 1285, "35%": 1141, "42%": 1040, "50%": 925, "VP": 15.10 },
+        { name: "vritilife® Facial Cleanser (100ml)", "MRP": 1165, "25%": 910, "35%": 808, "42%": 736, "50%": 655, "VP": 10.40 },
+        { name: "vritilife® Facial Toner (100ml)", "MRP": 1322, "25%": 1033, "35%": 917, "42%": 836, "50%": 743, "VP": 11.80 },
+        { name: "vritilife® Facial Serum (30 ml)", "MRP": 3022, "25%": 2361, "35%": 2096, "42%": 1911, "50%": 1700, "VP": 27.05 },
+        { name: "vritilife® Moisturizer (100ml)", "MRP": 1473, "25%": 1151, "35%": 1022, "42%": 931, "50%": 828, "VP": 13.15 },
+        { name: "HN-Skin Booster Orange -10gms*30 sachets", "MRP": 4398, "25%": 3582, "35%": 3258, "42%": 3031, "50%": 2771, "VP": 38.65 },
+        { name: "HN-Skin Booster Canister", "MRP": 4266, "25%": 3450, "35%": 3123, "42%": 2895, "50%": 2634, "VP": 38.65 },
+        { name: "vritilife immune health - 60 Tab", "MRP": 1717, "25%": 1341, "35%": 1191, "42%": 1086, "50%": 965, "VP": 15.80 },
+        { name: "Afresh Energy Drink Mix - Ginger - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
+        { name: "Afresh Energy Drink Mix - Elaichi - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
+        { name: "Afresh Energy Drink Mix - Lemon - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
+        { name: "Afresh Energy Drink Mix - Peach - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
+        { name: "Afresh Energy Drink Mix - Cinnamon - 50 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
+        { name: "Afresh Energy Drink Mix - Kashmiri Kahwa - 40 gms", "MRP": 913, "25%": 712, "35%": 633, "42%": 577, "50%": 513, "VP": 7.80 },
+        { name: "Afresh Energy Drink Mix - Tulsi (Basil) - 50 gms", "MRP": 913, "25%": 726, "35%": 652, "42%": 600, "50%": 540, "VP": 7.80 },
+        { name: "H24 Hydrate - 5 gms *20 Sachets", "MRP": 1839, "25%": 1504, "35%": 1370, "42%": 1276, "50%": 1169, "VP": 14.05 },
+        { name: "H24 Rebuild Strength - 50 gms *10 Sachets", "MRP": 2940, "25%": 2339, "35%": 2099, "42%": 1931, "50%": 1739, "VP": 24.70 },
+        { name: "DinoShake™ - Chocolicious - 200 gms", "MRP": 1252, "25%": 978, "35%": 868, "42%": 792, "50%": 704, "VP": 9.60 },
+        { name: "DinoShake™ - Strawberry - 200 gms", "MRP": 1252, "25%": 978, "35%": 868, "42%": 792, "50%": 704, "VP": 9.60 },
+        { name: "Activated Fibre - 90 Tablets", "MRP": 1839, "25%": 1436, "35%": 1275, "42%": 1162, "50%": 1034, "VP": 15.75 },
+        { name: "Active Fiber Complex - Unflavoured - 200 gms", "MRP": 2876, "25%": 2246, "35%": 1995, "42%": 1819, "50%": 1617, "VP": 22.95 },
+        { name: "Aloe Plus - 60 Capsules", "MRP": 1190, "25%": 929, "35%": 825, "42%": 752, "50%": 668, "VP": 9.40 },
+        { name: "Herbal Aloe Concentrate - Unflavored (Original) - 500 ml", "MRP": 3030, "25%": 2366, "35%": 2101, "42%": 1916, "50%": 1704, "VP": 24.95 },
+        { name: "Simply Probiotic - 1 gms *30 Sachets", "MRP": 2482, "25%": 1938, "35%": 1721, "42%": 1569, "50%": 1395, "VP": 21.95 },
+        { name: "vritilife Triphala - 60 Tablets", "MRP": 1224, "25%": 956, "35%": 849, "42%": 774, "50%": 688, "VP": 11.25 },
+        { name: "Herbalife Calcium Tablets - 60 Tablets", "MRP": 1352, "25%": 1056, "35%": 937, "42%": 855, "50%": 760, "VP": 10.25 },
+        { name: "Joint Support - 90 Tablets", "MRP": 2759, "25%": 2155, "35%": 1913, "42%": 1744, "50%": 1551, "VP": 20.90 },
+        { name: "Herbalife Niteworks - 300 gms", "MRP": 8010, "25%": 6258, "35%": 5557, "42%": 5066, "50%": 4505, "VP": 75.00 },
+        { name: "Herbalifeline - 60 Softgels", "MRP": 2998, "25%": 2341, "35%": 2079, "42%": 1895, "50%": 1686, "VP": 25.75 },
+        { name: "Beta Heart - Vanilla Flavour - 15 gms *15 Sachets", "MRP": 2520, "25%": 2054, "35%": 1868, "42%": 1738, "50%": 1589, "VP": 19.55 },
+        { name: "Multivitamin Mineral and Herbal Tablets Plus - 90 Tablets", "MRP": 2252, "25%": 1759, "35%": 1562, "42%": 1424, "50%": 1226, "VP": 19.95 },
+        { name: "Cell Activator - New - 60 Tablets", "MRP": 2489, "25%": 1944, "35%": 1726, "42%": 1574, "50%": 1399, "VP": 21.95 },
+        { name: "Cell-U-Loss Advanced - 90 Tablets", "MRP": 1916, "25%": 1496, "35%": 1329, "42%": 1211, "50%": 1077, "VP": 15.75 },
+        { name: "Herbal Control - 90 Tablets", "MRP": 3858, "25%": 3013, "35%": 2676, "42%": 2440, "50%": 2169, "VP": 32.95 }
     ];
 
     let itemIndex = 0;
 
     function addProductRow() {
-      const container = document.getElementById("products");
-      const template = document.getElementById("product-template").content.cloneNode(true);
+        const container = document.getElementById("products");
+        const template = document.getElementById("product-template").content.cloneNode(true);
 
-      const productSelect = template.querySelector(".product-select");
-      productsData.forEach(prod => {
-        const option = document.createElement("option");
-        option.value = prod.name;
-        option.textContent = prod.name;
-        productSelect.appendChild(option);
-      });
+        const productSelect = template.querySelector(".product-select");
+        productsData.forEach(prod => {
+            const option = document.createElement("option");
+            option.value = prod.name;
+            option.textContent = prod.name;
+            productSelect.appendChild(option);
+        });
 
-      const wrapper = document.createElement("div");
-      wrapper.className = "product-row";
-      wrapper.appendChild(template);
+        const wrapper = document.createElement("div");
+        wrapper.className = "product-row";
+        wrapper.appendChild(template);
 
-      const delBtn = document.createElement("button");
-      delBtn.type = "button";
-      delBtn.innerText = "🗑️ Delete";
-      delBtn.onclick = () => {
-        wrapper.classList.add("removing");
-        setTimeout(() => {
-          wrapper.remove();
-          updateItemCount();
-        }, 300);
-      };
-      wrapper.appendChild(delBtn);
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.innerText = "🗑️ Delete";
+        delBtn.onclick = () => {
+            wrapper.classList.add("removing");
+            setTimeout(() => {
+                wrapper.remove();
+                updateItemCount();
+            }, 300);
+        };
+        wrapper.appendChild(delBtn);
 
-      container.appendChild(wrapper);
-      updateItemCount();
-      itemIndex++;
+        container.appendChild(wrapper);
+        updateItemCount();
+        itemIndex++;
     }
 
     function updateItemCount() {
-      document.getElementById("item_count").value = document.querySelectorAll(".product-row").length;
+        document.getElementById("item_count").value = document.querySelectorAll(".product-row").length;
     }
 
     function computeTotal() {
-      const rows = document.querySelectorAll(".product-row");
-      const results = document.getElementById("results");
-      results.innerHTML = "";
+        const rows = document.querySelectorAll(".product-row");
+        const results = document.getElementById("results");
+        results.innerHTML = "";
 
-      let totalCost = 0;
-      let totalVolumePoints = 0;
-      const list = document.createElement("ul");
+        let totalCost = 0;
+        let totalVolumePoints = 0;
+        const list = document.createElement("ul");
 
-      rows.forEach(row => {
-        const product = row.querySelector(".product-select").value;
-        const quantity = parseInt(row.querySelector(".quantity-input").value);
-        const discount = row.querySelector(".discount-select").value;
+        rows.forEach(row => {
+            const product = row.querySelector(".product-select").value;
+            const quantity = parseInt(row.querySelector(".quantity-input").value);
+            const discount = row.querySelector(".discount-select").value;
 
-        const item = productsData.find(p => p.name === product);
-        let unitPrice;
-        if (discount === "MRP") {
-          unitPrice = item ? item["MRP"] : 0;
-        } else {
-          unitPrice = item ? item[discount] : 0;
-        }
-        
-        const cost = unitPrice * quantity;
-        const volumePoints = item ? item["VP"] * quantity : 0;
+            const item = productsData.find(p => p.name === product);
+            let unitPrice;
+            if (discount === "MRP") {
+                unitPrice = item ? item["MRP"] : 0;
+            } else {
+                unitPrice = item ? item[discount] : 0;
+            }
 
-        totalCost += cost;
-        totalVolumePoints += volumePoints;
+            const cost = unitPrice * quantity;
+            const volumePoints = item ? item["VP"] * quantity : 0;
 
-        const li = document.createElement("li");
-        li.textContent = `${quantity} × ${product} @ ₹${unitPrice} (${discount}) → ₹${cost} (VP: ${volumePoints.toFixed(2)})`;
-        list.appendChild(li);
-      });
+            totalCost += cost;
+            totalVolumePoints += volumePoints;
 
-      results.appendChild(list);
-      const totalCostLine = document.createElement("strong");
-      totalCostLine.textContent = `Total Cost: ₹${totalCost}`;
-      results.appendChild(totalCostLine);
+            const li = document.createElement("li");
+            li.textContent = `${quantity} × ${product} @ ₹${unitPrice} (${discount}) → ₹${cost} (VP: ${volumePoints.toFixed(2)})`;
+            list.appendChild(li);
+        });
 
-      const totalVpLine = document.createElement("strong");
-      totalVpLine.textContent = `Total Volume Points: ${totalVolumePoints.toFixed(2)}`;
-      results.appendChild(totalVpLine);
+        results.appendChild(list);
+        const totalCostLine = document.createElement("strong");
+        totalCostLine.textContent = `Total Cost: ₹${totalCost}`;
+        results.appendChild(totalCostLine);
+
+        const totalVpLine = document.createElement("strong");
+        totalVpLine.textContent = `Total Volume Points: ${totalVolumePoints.toFixed(2)}`;
+        results.appendChild(totalVpLine);
     }
 
     function exportReceipt() {
-      const rows = document.querySelectorAll(".product-row");
-      let receiptText = "🧾 Greencard — Smart Rate Planner Receipt\n\n";
-      let totalCost = 0;
-      let totalVolumePoints = 0;
+        const rows = document.querySelectorAll(".product-row");
+        let receiptText = "🧾 Greencard — Smart Rate Planner Receipt\n\n";
+        let totalCost = 0;
+        let totalVolumePoints = 0;
 
-      rows.forEach(row => {
-        const product = row.querySelector(".product-select").value;
-        const quantity = parseInt(row.querySelector(".quantity-input").value);
-        const discount = row.querySelector(".discount-select").value;
-        const item = productsData.find(p => p.name === product);
-        
-        let unitPrice;
-        if (discount === "MRP") {
-          unitPrice = item ? item["MRP"] : 0;
-        } else {
-          unitPrice = item ? item[discount] : 0;
-        }
+        rows.forEach(row => {
+            const product = row.querySelector(".product-select").value;
+            const quantity = parseInt(row.querySelector(".quantity-input").value);
+            const discount = row.querySelector(".discount-select").value;
+            const item = productsData.find(p => p.name === product);
 
-        const cost = unitPrice * quantity;
-        const volumePoints = item ? item["VP"] * quantity : 0;
+            let unitPrice;
+            if (discount === "MRP") {
+                unitPrice = item ? item["MRP"] : 0;
+            } else {
+                unitPrice = item ? item[discount] : 0;
+            }
 
-        totalCost += cost;
-        totalVolumePoints += volumePoints;
-        receiptText += `${quantity} × ${product} @ ₹${unitPrice} (${discount}) → ₹${cost} (VP: ${volumePoints.toFixed(2)})\n`;
-      });
+            const cost = unitPrice * quantity;
+            const volumePoints = item ? item["VP"] * quantity : 0;
 
-      receiptText += `\nTotal Cost: ₹${totalCost}\n`;
-      receiptText += `Total Volume Points: ${totalVolumePoints.toFixed(2)}`;
+            totalCost += cost;
+            totalVolumePoints += volumePoints;
+            receiptText += `${quantity} × ${product} @ ₹${unitPrice} (${discount}) → ₹${cost} (VP: ${volumePoints.toFixed(2)})\n`;
+        });
 
-      const blob = new Blob([receiptText], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "Greencard-Receipt.txt";
-      link.click();
-      URL.revokeObjectURL(url);
+        receiptText += `\nTotal Cost: ₹${totalCost}\n`;
+        receiptText += `Total Volume Points: ${totalVolumePoints.toFixed(2)}`;
+
+        const blob = new Blob([receiptText], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "Greencard-Receipt.txt";
+        link.click();
+        URL.revokeObjectURL(url);
     }
 
     window.onload = addProductRow;
-  </script>
+</script>
 </body>
 </html>
